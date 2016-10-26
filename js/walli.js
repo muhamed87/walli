@@ -12,63 +12,78 @@
 				rows: 3,
 				columns: 5,
 				timer: 3000
-			}
-				
-			var options =  $.extend(defaults, options);
-			return this.each(function() {
-				var settings = options;
+			};
+			return this.each( function() {
+				var settings =  $.extend(defaults, options);
+				var imageBlocks = []; // array to hold children elements.
+				var item = 0;
+				var itemsCount = 0;
 
-				var array = [];
-				$(this).children().each(function(){
-					var element = $(this);
-					array.push(element);
+				/**
+				* Set width of walli to be 100% of its parent.
+				*/
+				setWidth = function() {
+					$(this).css('width', '100%');
+				};
+				/**
+				* Set count of imageBlocks.
+				*/
+				setCount = function() {
+					itemsCount = imageBlocks.length;
+				};
+				/**
+				* set width for each image block.
+				*/
+				setImageBlockWidth = function(container) {
+					$('.item').outerWidth(getItemWidth(container));
+					$('.item img').css('max-width','100%');
+				};
+				/**
+				* Get random image block in each time.
+				*/
+				getRandomImageBlock = function(container) {
+					var walliMainContainer = $(container).context.outerHTML;
+					var imageBlock = imageBlocks[Math.floor(Math.random()*itemsCount)].context.outerHTML;
+					if(walliMainContainer.search(imageBlock) > 0) {
+						imageBlock = getRandomImageBlock(container);
+					}
+					return imageBlock;
+				};
+				/**
+				* get width of each image block.
+				*/
+				getItemWidth = function(container) {
+					return ($(container).width() / settings.columns);
+				};
+
+				/**
+				* For each element inside the main container we will put it in array.
+				*/
+				$(this).children().each( function() {
+					imageBlocks.push($(this));
 					$(this).remove();
 				});
-
-				$(this).css('width', '100%');
-
-				var item = 0;
-				var items = array.length;
-				if(array.length/settings.columns < settings.rows){
-					for (var r = 0; r < settings.rows-1; r++) {
+				/**
+				* append image block to walli container.
+				*/
+				appendToContainer = function(container) {
+					var rowsCount = ((itemsCount / settings.columns) < settings.rows) ? settings.rows-1 : settings.rows;
+					for (var r = 0; r < rowsCount; r++) {
 						var $row = $('<div class="walli-row"></div>');
-						$(this).append($row);
+						$(container).append($row);
 						for (var c = 0; c < settings.columns; c++) {
-							if(item<items){
-								var getItem = array[Math.floor(Math.random()*array.length)].context.outerHTML;
-								var showcase = $(this).context.outerHTML;
-								while(showcase.search(getItem) > 0) {
-									getItem = array[Math.floor(Math.random()*array.length)].context.outerHTML;
-								}
+							if(item < itemsCount){
+								$row.append('<div class="item active">' + getRandomImageBlock(container) + '</div>');
 							}
-							$row.append('<div class="item active">' + getItem + '</div>');
 							item++;
 						}
 					}
-				}
-				else {
-					for (var r = 0; r < settings.rows; r++) {
-						var $row = $('<div class="walli-row"></div>');
-						for (var c = 0; c < settings.columns; c++) {
-							if(item<items){
-								var getItem = array[Math.floor(Math.random()*array.length)].context.outerHTML;
-								var showcase = $(this).context.outerHTML;
-								while(showcase.search(getItem) > 0) {
-									getItem = array[Math.floor(Math.random()*array.length)].context.outerHTML;
-								}
-							}
-							$row.append('<div class="item active">' + getItem + '</div>');
-							item++;
-						}
-						$(this).append($row);
-					}
-				}
-
-				var itemWidth = $(this).width()/settings.columns;
-				$('.item').outerWidth(itemWidth);
-				$('.item img').css('max-width','100%');
+					setImageBlockWidth(this);
+				};
+				setWidth();
+				setCount();
+				appendToContainer(this);
 			});
 		}
 	});
-
 })(jQuery);
