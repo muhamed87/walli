@@ -18,7 +18,6 @@
 				var imageBlocks = []; // array to hold children elements.
 				var item = 0;
 				var itemsCount = 0;
-				var itemWidth = $(this).width() / settings.columns;
 
 				/**
 				* Set width of walli to be 100% of its parent.
