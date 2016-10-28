@@ -44,8 +44,8 @@
 				getRandomImageBlock = function(container) {
 					var walliMainContainer = $(container).context.outerHTML;
 					var imageBlock = imageBlocks[Math.floor(Math.random()*itemsCount)].context.outerHTML;
-					if(walliMainContainer.search(imageBlock) > 0) {
-						imageBlock = getRandomImageBlock(container);
+					while(walliMainContainer.search(imageBlock) > 0) {
+						imageBlock = imageBlocks[Math.floor(Math.random()*itemsCount)].context.outerHTML;
 					}
 					return imageBlock;
 				};
