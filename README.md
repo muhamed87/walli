@@ -11,4 +11,4 @@ A jquery plugin will make a group of images to be like a wall and it will change
 - type these files in your page:
   - {path}/jquery-2.2.4.min.js
   - {path}/walli.js
-- target container contain <img> by type $({target container}).walli();
+- target container contain (img tags) by type $({target container}).walli();
