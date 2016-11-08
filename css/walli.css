@@ -18,7 +18,7 @@ html, body {
 	width: 100%;
 }
 
-.walli .item {
+.walli .walli-item {
 	position: relative;
 	min-height: 1px;
 	display: inline-block;
@@ -27,11 +27,12 @@ html, body {
 	float: left;
 }
 
-.walli .item img {
+.walli .walli-item img {
 	display: block;
+	width: 100%;
 }
 
-.walli .item:hover {
+.walli .walli-item:hover {
 	box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
 	z-index: 999;
 	transform: scale(1.1,1.1);
